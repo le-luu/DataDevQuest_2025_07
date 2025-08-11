@@ -1,4 +1,4 @@
-# DataDev Quest Challenge 2025_06
+# DataDev Quest Challenge 2025_07
 
 ![image](https://github.com/le-luu/DataDevQuest_2025_03/blob/main/img/logo.svg)
 
@@ -47,6 +47,8 @@ Write a query that gets out details about a workbook of your choosing. Retrieve 
 **Output**
 
 ![image](https://github.com/le-luu/DataDevQuest_2025_07/blob/main/img/Intermediate_schema.png)
+
+One benefit of using MetaData API is I can combine multiple queries into one GraphQL query to extract the data I want. With REST API, I couldn't do that. To extract different data, I need to use different endpoint.
 
 I built a Python program with this schema. First, I will write a query to list all workbooks and published data source in one GraphQL query. Then, I will let the user choose 2 options:
 - Option 1: Select a workbook on the list to explore more details (including workbook id, name, project Name, owner id, owner name, published data source connected by that specified workbook)
