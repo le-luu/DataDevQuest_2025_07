@@ -1,7 +1,7 @@
 import pandas as pd
 import tableauserverclient as TSC
 import json
-from credentials import PAT_NAME, PAT_SECRET, SERVER_ADDRESS, SITE_ID
+from credentials import PAT_NAME, PAT_SECRET, SERVER_ADDRESS, SITE_ID #Add the credentials info 
 
 #get the list of workbook using GraphQL query
 def get_workbook_list(PAT_NAME, PAT_SECRET, SERVER_ADDRESS, SITE_ID):
@@ -19,14 +19,16 @@ def get_workbook_list(PAT_NAME, PAT_SECRET, SERVER_ADDRESS, SITE_ID):
 			}
 		}
 		""")
-		#get the data after quering
+		#extract the data after querying
 		wb = workbook_list['data']['workbooks']
 
 	if not wb:
 		print("No workbooks found.")
 		return pd.DataFrame()
-	#parse and store the data in pandas dataframe
+	
+	#flatten and store the data in pandas dataframe
 	wb_df = pd.json_normalize(wb)
+
 	return wb_df
 
 #From the list of workbook above, let the user choose workbook to get detail info
@@ -55,10 +57,10 @@ def print_workbook_details(selected_wb_id,PAT_NAME, PAT_SECRET, SERVER_ADDRESS, 
     	#run the graphQL query
         filtered_workbook = server.metadata.query(query)
 
-    #Store the workbook details in wb_details
+    #Extract the workbook details from the response
     wb_details = filtered_workbook['data']['workbooks']
 
-    #Parse JSON 
+    #Flatten JSON data into a pandas DataFrame
     wb_details_df = pd.json_normalize(wb_details)
 
     #Rename the column in the dataframe
@@ -89,18 +91,19 @@ def main():
 		print(f"No workbooks on {SERVER_ADDRESS}/{SITE_ID}")
 		return
 
-	#Print the list of workbooks on the site
+	#Print the list of workbooks on the site to let the user choose
 	print(f"List of Workbooks on site {SITE_ID}:")
 	for i, row in wb_df.iterrows():
 		print(f"{i+1}: {row['name']}")
 
+	print("\n================================================")
 	#Initialize empty for the selected workbook
 	selected_wb = None  
 
 	#From the list of workbooks, let the user choose the workbook want to see details
 	while True:
 		try:
-			#From the lis
+			# show the prompt to select the workbook
 			choice = int(input("Select a workbook by number (or 0 to exit): "))
 			if choice == 0:
 				print("Exiting ... See you next time!")
@@ -108,7 +111,7 @@ def main():
 			elif 1 <= choice <= len(wb_df):
 				selected_wb = wb_df.iloc[choice - 1]
 				print("You selected:")
-				print(f"Workbook name: {selected_wb['name']}")
+				print(f"* Workbook name: {selected_wb['name']}")
 				break
 			else:
 				print("Invalid choice, please try again.")
@@ -118,12 +121,13 @@ def main():
 	# Access ID only if a workbook was selected
 	if selected_wb is not None:
 		selected_wb_id = selected_wb['id']
-		print(f"Workbook ID: {selected_wb_id}")
+		print(f"* Workbook ID: {selected_wb_id}")
 
 	detail_df = print_workbook_details(selected_wb_id, PAT_NAME, PAT_SECRET, SERVER_ADDRESS, SITE_ID)
 
 	if not detail_df.empty:
-		print("Workbook Details:")
+		print("\n================================================")
+		print("==> Workbook Details:")
 		pd.set_option('display.max_columns', None)
 		print(detail_df)
 	else:
