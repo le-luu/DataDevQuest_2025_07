@@ -12,7 +12,7 @@ Jordan Woods
 - Parse JSON and flatten data from the response in JSON structure format
 
 ### Solution Video
-[![DDQ_2025_07](https://img.youtube.com/vi/XnwSVBBIcHU/0.jpg)](https://www.youtube.com/watch?v=XnwSVBBIcHU)
+[![DDQ_2025_07](https://img.youtube.com/vi/DnZodzxS1HE/0.jpg)](https://www.youtube.com/watch?v=DnZodzxS1HE)
 
 ### Beginner Challenge
 Link to the Beginner Challenge: https://datadevquest.com/ddq2025-07-tableau-metadata-api-beginner/
